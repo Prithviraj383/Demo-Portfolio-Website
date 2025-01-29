@@ -93,3 +93,58 @@ document.querySelectorAll('#navbar a').forEach(link => {
     }
   });
 });
+
+// Existing code remains...
+
+// Mobile Menu Functionality
+const mobileMenu = document.getElementById('mobile-menu');
+const sideMenu = document.getElementById('side-menu');
+let menuOpen = false;
+
+// Create overlay element
+const overlay = document.createElement('div');
+overlay.className = 'menu-overlay';
+document.body.appendChild(overlay);
+
+function toggleMobileMenu() {
+  menuOpen = !menuOpen;
+  mobileMenu.classList.toggle('active');
+  sideMenu.classList.toggle('active');
+  overlay.classList.toggle('active');
+  document.body.style.overflow = menuOpen ? 'hidden' : 'auto';
+}
+
+// Event Listeners for Mobile Menu
+mobileMenu.addEventListener('click', toggleMobileMenu);
+overlay.addEventListener('click', toggleMobileMenu);
+
+// Close menu when clicking a link
+document.querySelectorAll('.side-menu a').forEach(link => {
+  link.addEventListener('click', () => {
+    if (menuOpen) {
+      toggleMobileMenu();
+    }
+  });
+});
+
+// Close menu when resizing to desktop view
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 768 && menuOpen) {
+    toggleMobileMenu();
+  }
+});
+
+// Handle scroll lock when menu is open
+function handleScrollLock() {
+  if (menuOpen) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = 'auto';
+  }
+}
+
+// Update scroll lock when opening/closing menu
+document.addEventListener('menuToggle', handleScrollLock);
+
+// Keep your existing initialization code...
+window.addEventListener('DOMContentLoaded', init);
